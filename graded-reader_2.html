@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Graded Chinese Reader</title>
+<style>
+:root{--bg:#faf7f2;--fg:#2a2623;--mut:#7a716a;--card:#fff;--bd:#e4ddd3;--ac:#b8322a;--hl:#f6e3df;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1c1a19;--fg:#ece6df;--mut:#9b918a;--card:#262322;--bd:#3a3533;--ac:#e0675d;--hl:#3b2623;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1c1a19;--fg:#ece6df;--mut:#9b918a;--card:#262322;--bd:#3a3533;--ac:#e0675d;--hl:#3b2623;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.5}
+main{max-width:640px;margin:0 auto;padding:20px 16px 300px}
+h1{font-size:22px;margin:0 0 4px}
+.sub{color:var(--mut);font-size:14px;margin:0 0 16px}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+button{font:inherit;border:1px solid var(--bd);background:var(--card);color:var(--fg);padding:7px 13px;border-radius:999px;cursor:pointer}
+button.on{background:var(--ac);border-color:var(--ac);color:#fff}
+.story{display:block;width:100%;text-align:left;border-radius:12px;padding:12px 14px;margin:8px 0}
+.story b{display:block;font-size:17px}.story span{color:var(--mut);font-size:13px}
+.sent{margin:0 0 16px}
+.line{display:flex;flex-wrap:wrap;align-items:flex-end;gap:2px 1px}
+.w{display:inline-flex;flex-direction:column;align-items:center;padding:2px 3px;border-radius:6px;cursor:pointer}
+.w:hover,.w.sel{background:var(--hl)}
+.py{font-size:12px;color:var(--mut);min-height:16px}
+.hide-py .py{visibility:hidden}
+.hz{font-size:26px;line-height:1.3;font-family:"Noto Serif SC","Songti SC",serif}
+.p{font-size:26px;align-self:flex-end;font-family:"Noto Serif SC","Songti SC",serif}
+.tr{color:var(--mut);font-size:14px;margin-top:2px;display:none}
+.show-tr .tr{display:block}
+#pop{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--bd);padding:14px 16px calc(14px + env(safe-area-inset-bottom,0px));display:none}
+#pop .in{max-width:640px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:12px}
+#pop .big{font-size:24px}#pop .pp{color:var(--ac)}
+#strokes{display:flex;gap:8px;overflow-x:auto;max-width:640px;margin:0 auto 10px}#strokes:empty{display:none}.sc{flex:0 0 auto;min-width:90px;min-height:90px;border:1px solid var(--bd);border-radius:8px;font-size:12px;color:var(--mut);cursor:pointer;display:flex;align-items:center;justify-content:center;text-align:center;padding:4px;max-width:140px}
+.back{background:none;border:none;color:var(--ac);padding:0;margin-bottom:8px}
+.saved{margin-top:24px;border-top:1px solid var(--bd);padding-top:12px;font-size:14px}
+.saved div{padding:3px 0}
+</style></head><body><main id="app"></main>
+<div id="pop"><div id="strokes"></div><div class="in"><div><span class="big" id="phz"></span> <span class="pp" id="ppy"></span><div id="pgl"></div></div><div class="row" style="margin:0;flex-wrap:nowrap"><button id="psave">+ Save</button><button id="pclose" aria-label="Close">✕</button></div></div></div>
+<script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3.5.0/dist/hanzi-writer.min.js"></script>
+<script>
+const LEVELS={
+"HSK 1":[{t:"我的家",e:"My Family",s:[
+"我|wǒ|I/家|jiā|home, family/有|yǒu|to have/四|sì|four/个|gè|(measure word)/人|rén|person/。=There are four people in my family.",
+"爸爸|bàba|dad/、/妈妈|māma|mom/、/哥哥|gēge|older brother/和|hé|and/我|wǒ|me/。=Dad, Mom, my older brother, and me.",
+"爸爸|bàba|dad/是|shì|to be/医生|yīshēng|doctor/，/他|tā|he/在|zài|at/医院|yīyuàn|hospital/工作|gōngzuò|to work/。=Dad is a doctor; he works at a hospital.",
+"妈妈|māma|mom/是|shì|to be/老师|lǎoshī|teacher/，/她|tā|she/在|zài|at/学校|xuéxiào|school/工作|gōngzuò|to work/。=Mom is a teacher; she works at a school.",
+"哥哥|gēge|older brother/也|yě|also/是|shì|to be/学生|xuésheng|student/。=My older brother is also a student.",
+"我们|wǒmen|we/住|zhù|to live/在|zài|in/北京|Běijīng|Beijing/。=We live in Beijing.",
+"我们|wǒmen|we/家|jiā|home/有|yǒu|to have/一|yì|one/只|zhī|(measure word for animals)/小|xiǎo|small/猫|māo|cat/。=We have a small cat at home.",
+"它|tā|it/的|de|(possessive)/名字|míngzi|name/叫|jiào|to be called/咪咪|Mīmi|Mimi/。=Its name is Mimi.",
+"星期天|xīngqītiān|Sunday/，/我们|wǒmen|we/都|dōu|all/在|zài|at/家|jiā|home/。=On Sunday, we are all at home.",
+"妈妈|māma|mom/做|zuò|to make/很|hěn|very/多|duō|many/菜|cài|dishes/。=Mom makes many dishes.",
+"我|wǒ|I/爱|ài|to love/吃|chī|to eat/妈妈|māma|mom/做|zuò|to make/的|de|(possessive)/米饭|mǐfàn|rice/。=I love eating the rice Mom makes.",
+"吃|chī|to eat/饭|fàn|meal/以后|yǐhòu|after/，/我们|wǒmen|we/看|kàn|to watch/电视|diànshì|TV/。=After the meal, we watch TV.",
+"猫|māo|cat/坐|zuò|to sit/在|zài|on/我|wǒ|my/的|de|(possessive)/椅子|yǐzi|chair/上|shàng|on top/。=The cat sits on my chair.",
+"我|wǒ|I/爱|ài|to love/我|wǒ|my/的|de|(possessive)/家|jiā|family/。=I love my family."]},
+{t:"我的一天",e:"My Day",s:[
+"我|wǒ|I/叫|jiào|to be called/小明|Xiǎo Míng|Xiao Ming/。=My name is Xiao Ming.",
+"我|wǒ|I/是|shì|to be/学生|xuésheng|student/。=I am a student.",
+"今天|jīntiān|today/我|wǒ|I/去|qù|to go/学校|xuéxiào|school/。=Today I go to school.",
+"我|wǒ|I/的|de|(possessive)/朋友|péngyou|friend/很|hěn|very/多|duō|many/。=I have many friends.",
+"中午|zhōngwǔ|noon/我们|wǒmen|we/一起|yìqǐ|together/吃|chī|to eat/饭|fàn|meal/。=At noon we eat together.",
+"我|wǒ|I/很|hěn|very/喜欢|xǐhuan|to like/学习|xuéxí|to study/。=I really like studying."]}],
+"HSK 2":[{t:"周末",e:"The Weekend",s:[
+"星期六|xīngqīliù|Saturday/早上|zǎoshang|morning/，/天气|tiānqì|weather/很|hěn|very/好|hǎo|good/。=On Saturday morning the weather was very nice.",
+"我|wǒ|I/和|hé|and/姐姐|jiějie|older sister/决定|juédìng|to decide/去|qù|to go/公园|gōngyuán|park/玩|wán|to play/。=My sister and I decided to go to the park.",
+"我们|wǒmen|we/先|xiān|first/坐|zuò|to take/公共汽车|gōnggòngqìchē|bus/，/然后|ránhòu|then/走路|zǒulù|to walk/到|dào|to arrive/公园|gōngyuán|park/。=First we took the bus, then walked to the park.",
+"公园|gōngyuán|park/里|lǐ|inside/有|yǒu|to have/很多|hěn duō|a lot of/人|rén|people/。=There were lots of people in the park.",
+"有的|yǒude|some/人|rén|people/在|zài|(ongoing)/跑步|pǎobù|to jog/，/有的|yǒude|some/人|rén|people/在|zài|(ongoing)/唱歌|chànggē|to sing/。=Some people were jogging, and some were singing.",
+"我们|wǒmen|we/在|zài|at/河|hé|river/边|biān|side/坐|zuò|to sit/了|le|(completed)/一会儿|yíhuìr|a while/。=We sat by the river for a while.",
+"姐姐|jiějie|older sister/拿|ná|to take/出|chū|out/一|yí|one/个|gè|(measure word)/面包|miànbāo|bread/，/我们|wǒmen|we/一起|yìqǐ|together/吃|chī|to eat/。=My sister took out a loaf of bread and we ate it together.",
+"突然|tūrán|suddenly/，/下|xià|to fall/雨|yǔ|rain/了|le|(change of state)/。=Suddenly it began to rain.",
+"我们|wǒmen|we/没有|méiyǒu|not have/带|dài|to bring/伞|sǎn|umbrella/，/只能|zhǐnéng|can only/跑|pǎo|to run/回|huí|to go back/家|jiā|home/。=We hadn’t brought an umbrella, so we could only run home.",
+"到|dào|to arrive/家|jiā|home/以后|yǐhòu|after/，/我们|wǒmen|we/的|de|(possessive)/衣服|yīfu|clothes/都|dōu|all/湿|shī|wet/了|le|(change of state)/。=After we got home, our clothes were all wet.",
+"妈妈|māma|mom/给|gěi|to give/我们|wǒmen|us/做|zuò|to make/了|le|(completed)/热|rè|hot/茶|chá|tea/。=Mom made us hot tea.",
+"虽然|suīrán|although/下雨|xiàyǔ|to rain/，/但是|dànshì|but/这|zhè|this/一|yì|one/天|tiān|day/我|wǒ|I/过|guò|to spend/得|de|(complement marker)/很|hěn|very/开心|kāixīn|happy/。=Although it rained, I had a really happy day."]},
+{t:"去商店",e:"At the Shop",s:[
+"昨天|zuótiān|yesterday/我|wǒ|I/和|hé|and, with/朋友|péngyou|friend/去|qù|to go/商店|shāngdiàn|shop/买|mǎi|to buy/东西|dōngxi|things/。=Yesterday I went shopping with a friend.",
+"我|wǒ|I/想|xiǎng|to want/买|mǎi|to buy/一|yì|one/件|jiàn|(measure word for clothes)/新|xīn|new/衣服|yīfu|clothes/。=I wanted to buy a new piece of clothing.",
+"那|nà|that/件|jiàn|(measure word)/衣服|yīfu|clothes/很|hěn|very/漂亮|piàoliang|pretty/，/可是|kěshì|but/太|tài|too/贵|guì|expensive/了|le|(change of state)/。=That item was very pretty, but too expensive.",
+"朋友|péngyou|friend/说|shuō|to say/：“我们|wǒmen|we/看看|kànkan|take a look/别的|biéde|others/吧|ba|(suggestion)/。”=My friend said, “Let’s look at something else.”",
+"最后|zuìhòu|finally/我|wǒ|I/买|mǎi|to buy/了|le|(completed)/一|yì|one/双|shuāng|pair/白色|báisè|white/的|de|(possessive)/鞋|xié|shoes/。=In the end I bought a pair of white shoes.",
+"我|wǒ|I/觉得|juéde|to feel/很|hěn|very/高兴|gāoxìng|happy/。=I felt very happy."]}],
+"HSK 3":[{t:"迟到了",e:"Running Late",s:[
+"今天|jīntiān|today/早上|zǎoshang|morning/我|wǒ|I/起床|qǐchuáng|to get up/晚|wǎn|late/了|le|(change of state)/。=This morning I got up late.",
+"我|wǒ|I/没|méi|did not/吃|chī|to eat/早饭|zǎofàn|breakfast/，/就|jiù|right away/跑|pǎo|to run/出|chū|out/了|le|(completed)/家门|jiāmén|front door/。=I skipped breakfast and ran out the door.",
+"地铁|dìtiě|subway/上|shàng|on/的|de|(possessive)/人|rén|people/非常|fēicháng|extremely/多|duō|many/，/我|wǒ|I/差点儿|chàdiǎnr|almost/没|méi|not/上|shàng|to board/去|qù|(direction)/。=The subway was extremely crowded; I almost couldn’t get on.",
+"到|dào|to arrive/学校|xuéxiào|school/的|de|(possessive)/时候|shíhou|time/，/老师|lǎoshī|teacher/已经|yǐjīng|already/开始|kāishǐ|to begin/上课|shàngkè|to have class/了|le|(change of state)/。=When I got to school, the teacher had already started class.",
+"我|wǒ|I/不好意思|bù hǎoyìsi|embarrassed/地|de|(adverb marker)/走|zǒu|to walk/进|jìn|into/教室|jiàoshì|classroom/，/老师|lǎoshī|teacher/笑|xiào|to smile/着|zhe|(ongoing)/说|shuō|to say/没关系|méi guānxi|it’s okay/。=Embarrassed, I walked into the classroom; the teacher smiled and said it was okay.",
+"从|cóng|from/明天|míngtiān|tomorrow/起|qǐ|onward/，/我|wǒ|I/一定|yídìng|definitely/要|yào|must/早|zǎo|early/点儿|diǎnr|a bit/起床|qǐchuáng|to get up/。=From tomorrow on, I will definitely get up a bit earlier."]}]
+};
+const KEY="graded-reader-saved";
+function load(){try{return JSON.parse(localStorage.getItem(KEY))||[]}catch(e){return[]}}
+function store(){try{localStorage.setItem(KEY,JSON.stringify(saved))}catch(e){}}
+let lv="HSK 1",st=null,py=true,tr=false,cur=null,saved=load();
+const $=id=>document.getElementById(id);
+function parse(line){const[a,b]=line.split("=");return{tk:a.split("/").map(x=>{const p=x.split("|");return p.length<3?{p:x}:{h:p[0],py:p[1],g:p[2]}}),en:b}}
+function home(){st=null;$("pop").style.display="none";
+let h=`<h1>Graded Reader</h1><p class="sub">Tap any word for pinyin and meaning. Save words to review.</p><div class="row">`+
+Object.keys(LEVELS).map(k=>`<button class="${k==lv?"on":""}" onclick="lv='${k}';home()">${k}</button>`).join("")+`</div>`+
+LEVELS[lv].map((s,i)=>`<button class="story" onclick="open_(${i})"><b>${s.t}</b><span>${s.e} · ${s.s.length} sentences</span></button>`).join("");
+$("app").innerHTML=h}
+function open_(i){st=LEVELS[lv][i];render()}
+function render(){
+let h=`<button class="back" onclick="home()">← All stories</button><h1>${st.t}</h1><p class="sub">${st.e} · ${lv}</p>
+<div class="row"><button class="${py?"on":""}" onclick="py=!py;render()">Pinyin</button><button class="${tr?"on":""}" onclick="tr=!tr;render()">Translation</button></div>
+<div class="${py?"":"hide-py"} ${tr?"show-tr":""}">`;
+st.s.forEach((l,si)=>{const o=parse(l);h+=`<div class="sent"><div class="line">`+o.tk.map((t,ti)=>t.h?`<span class="w" data-k="${si}-${ti}" onclick="pick(${si},${ti},this)"><span class="py">${t.py}</span><span class="hz">${t.h}</span></span>`:`<span class="p">${t.p}</span>`).join("")+`</div><div class="tr">${o.en}</div></div>`});
+h+=`</div><div class="saved" id="sv"></div>`;$("app").innerHTML=h;svl()}
+function pick(si,ti,el){const t=parse(st.s[si]).tk[ti];cur=t;
+document.querySelectorAll(".w.sel").forEach(x=>x.classList.remove("sel"));el.classList.add("sel");
+$("phz").textContent=t.h;$("ppy").textContent=t.py;$("pgl").textContent=t.g;$("pop").style.display="block";showStrokes(t.h);
+$("psave").textContent=saved.some(s=>s.h==t.h)?"Saved ✓":"+ Save"}
+function closePop(){$("pop").style.display="none";$("strokes").innerHTML="";document.querySelectorAll(".w.sel").forEach(x=>x.classList.remove("sel"));cur=null}
+$("pclose").onclick=closePop;
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closePop()});
+$("psave").onclick=()=>{if(cur&&!saved.some(s=>s.h==cur.h)){saved.push(cur);store();$("psave").textContent="Saved ✓";svl()}};
+function showStrokes(h){const box=$("strokes");box.innerHTML="";
+if(typeof HanziWriter==="undefined"){box.innerHTML='<div class="sc">Stroke order needs an internet connection</div>';return}
+const cs=getComputedStyle(document.documentElement);
+[...h].filter(c=>/[\u4e00-\u9fff]/.test(c)).forEach(c=>{const d=document.createElement("div");d.className="sc";box.appendChild(d);
+const w=HanziWriter.create(d,c,{width:90,height:90,padding:5,strokeAnimationSpeed:1,delayBetweenStrokes:250,
+strokeColor:cs.getPropertyValue("--fg").trim()||"#000",outlineColor:cs.getPropertyValue("--bd").trim()||"#ddd",
+onLoadCharDataError:()=>{d.textContent="Couldn’t load strokes for "+c}});
+w.animateCharacter();d.onclick=()=>w.animateCharacter()})}
+function svl(){const e=$("sv");if(!e)return;
+e.innerHTML=saved.length?`<b>Saved words (${saved.length})</b>`+saved.map(s=>`<div>${s.h} · ${s.py} · ${s.g}</div>`).join("")+`<div class="row"><button onclick="exportCsv()">Export CSV</button><button onclick="clearSaved()">Clear</button></div>`:""}
+function exportCsv(){const q=v=>'"'+v.replace(/"/g,'""')+'"';
+const csv="\ufeff"+saved.map(s=>[s.h,s.py,s.g].map(q).join(",")).join("\n");
+const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));a.download="saved-words.csv";a.click()}
+function clearSaved(){saved=[];store();svl()}
+home();
+</script></body></html>
