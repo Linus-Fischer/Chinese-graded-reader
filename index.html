@@ -27,15 +27,31 @@ button.on{background:var(--ac);border-color:var(--ac);color:#fff}
 .p{font-size:26px;align-self:flex-end;font-family:"Noto Serif SC","Songti SC",serif}
 .tr{color:var(--mut);font-size:14px;margin-top:2px;display:none}
 .show-tr .tr{display:block}
-#pop{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--bd);padding:14px 16px calc(14px + env(safe-area-inset-bottom,0px));display:none}
+#pop{max-height:60vh;overflow-y:auto;position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--bd);padding:14px 16px calc(14px + env(safe-area-inset-bottom,0px));display:none}
 #pop .in{max-width:640px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:12px}
 #pop .big{font-size:24px}#pop .pp{color:var(--ac)}
 #strokes{display:flex;gap:8px;overflow-x:auto;max-width:640px;margin:0 auto 10px}#strokes:empty{display:none}.sc{flex:0 0 auto;min-width:90px;min-height:90px;border:1px solid var(--bd);border-radius:8px;font-size:12px;color:var(--mut);cursor:pointer;display:flex;align-items:center;justify-content:center;text-align:center;padding:4px;max-width:140px}
+#cinfo{max-width:640px;margin:0 auto 10px;font-size:14px;line-height:1.45}#cinfo:empty{display:none}#cinfo div{padding:2px 0}
+:root{--ok:#2e7d4f;--no:#b3261e}
+header.top h1{font-size:28px;letter-spacing:.5px;margin:0}
+.tabs{display:flex;gap:8px;margin:14px 0}
+.prog{display:flex;align-items:center;gap:10px;margin:6px 0 14px;color:var(--mut);font-size:13px}
+.bar{flex:1;height:6px;background:var(--bd);border-radius:6px;overflow:hidden}.bar i{display:block;height:100%;background:var(--ac)}
+.story{position:relative;border-left:4px solid var(--ac);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.story em{position:absolute;right:14px;top:14px;font-style:normal;font-size:12px;color:var(--ac);border:1px solid var(--ac);padding:1px 8px;border-radius:999px}
+.cta{display:block;width:100%;margin:12px 0;padding:13px;border-radius:12px;background:var(--ac);border-color:var(--ac);color:#fff;font-weight:600}
+.cta.alt{background:var(--card);color:var(--fg);border-color:var(--bd)}
+.opt{display:block;width:100%;text-align:left;margin:8px 0;padding:14px;border-radius:12px;font-size:16px}
+.opt.ok{border-color:var(--ok);background:rgba(46,125,79,.18)}.opt.no{border-color:var(--no);background:rgba(179,38,30,.18)}
+.fc{margin:16px 0;min-height:200px;border:1px solid var(--bd);background:var(--card);border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;cursor:pointer;text-align:center;padding:20px}
+.hz2{font-size:64px}.py2{color:var(--ac);font-size:22px}
+.score{font-size:64px;font-weight:700;color:var(--ac)}.score small{font-size:24px;color:var(--mut)}
+.hz,.p{font-size:var(--hz,26px)}
 .back{background:none;border:none;color:var(--ac);padding:0;margin-bottom:8px}
 .saved{margin-top:24px;border-top:1px solid var(--bd);padding-top:12px;font-size:14px}
 .saved div{padding:3px 0}
 </style></head><body><main id="app"></main>
-<div id="pop"><div id="strokes"></div><div class="in"><div><span class="big" id="phz"></span> <span class="pp" id="ppy"></span><div id="pgl"></div></div><div class="row" style="margin:0;flex-wrap:nowrap"><button id="psave">+ Save</button><button id="pclose" aria-label="Close">✕</button></div></div></div>
+<div id="pop"><div id="strokes"></div><div id="cinfo"></div><div class="in"><div><span class="big" id="phz"></span> <span class="pp" id="ppy"></span><div id="pgl"></div></div><div class="row" style="margin:0;flex-wrap:nowrap"><button id="psave">+ Save</button><button id="pclose" aria-label="Close">✕</button></div></div></div>
 <script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3.5.0/dist/hanzi-writer.min.js"></script>
 <script>
 const LEVELS={
@@ -54,6 +70,42 @@ const LEVELS={
 "吃|chī|to eat/饭|fàn|meal/以后|yǐhòu|after/，/我们|wǒmen|we/看|kàn|to watch/电视|diànshì|TV/。=After the meal, we watch TV.",
 "猫|māo|cat/坐|zuò|to sit/在|zài|on/我|wǒ|my/的|de|(possessive)/椅子|yǐzi|chair/上|shàng|on top/。=The cat sits on my chair.",
 "我|wǒ|I/爱|ài|to love/我|wǒ|my/的|de|(possessive)/家|jiā|family/。=I love my family."]},
+{t:"在饭店",e:"At the Restaurant",s:[
+"今天|jīntiān|today/，/我|wǒ|I/和|hé|and/朋友|péngyou|friend/去|qù|to go/饭店|fàndiàn|restaurant/吃饭|chīfàn|to eat/。=Today my friend and I go to a restaurant to eat.",
+"我|wǒ|I/想|xiǎng|to want/吃|chī|to eat/鱼|yú|fish/。=I want to eat fish.",
+"朋友|péngyou|friend/想|xiǎng|to want/吃|chī|to eat/米饭|mǐfàn|rice/。=My friend wants to eat rice.",
+"我们|wǒmen|we/还|hái|also/要|yào|to want/两|liǎng|two/杯|bēi|cup/水|shuǐ|water/。=We also want two cups of water.",
+"菜|cài|dishes/很|hěn|very/好吃|hǎochī|delicious/。=The food is very delicious.",
+"我|wǒ|I/说|shuō|to say/：“/多少|duōshao|how much/钱|qián|money/？”=I say, “How much is it?”",
+"饭店|fàndiàn|restaurant/的|de|(possessive)/人|rén|person/说|shuō|to say/：“/五十|wǔshí|fifty/块|kuài|yuan/。”=The restaurant worker says, “Fifty yuan.”",
+"我|wǒ|I/说|shuō|to say/：“/谢谢|xièxie|thank you/！/再见|zàijiàn|goodbye/！”=I say, “Thank you! Goodbye!”"]},
+{t:"快乐的星期六",e:"A Happy Saturday",s:[
+"今天|jīntiān|today/是|shì|to be/星期六|xīngqīliù|Saturday/。=Today is Saturday.",
+"早上|zǎoshang|morning/七|qī|seven/点|diǎn|o’clock/，/我|wǒ|I/起床|qǐchuáng|to get up/。=At seven in the morning, I get up.",
+"今天|jīntiān|today/天气|tiānqì|weather/很|hěn|very/好|hǎo|good/。=The weather is very nice today.",
+"我|wǒ|I/不|bù|not/去|qù|to go/学校|xuéxiào|school/，/在|zài|at/家|jiā|home/吃|chī|to eat/早饭|zǎofàn|breakfast/。=I am not going to school; I eat breakfast at home.",
+"妈妈|māma|mom/做|zuò|to make/了|le|(completed)/米饭|mǐfàn|rice/和|hé|and/菜|cài|dishes/。=Mom made rice and dishes.",
+"我|wǒ|I/吃|chī|to eat/了|le|(completed)/很|hěn|very/多|duō|many/。=I ate a lot.",
+"九|jiǔ|nine/点|diǎn|o’clock/，/我|wǒ|my/的|de|(possessive)/朋友|péngyou|friend/小红|Xiǎo Hóng|Xiao Hong/给|gěi|to/我|wǒ|me/打|dǎ|to make (a call)/电话|diànhuà|phone call/。=At nine, my friend Xiao Hong calls me.",
+"她|tā|she/说|shuō|to say/：“/我们|wǒmen|we/去|qù|to go/商店|shāngdiàn|shop/，/好|hǎo|okay/吗|ma|(question)/？”=She says, “Let’s go to the shop, okay?”",
+"我|wǒ|I/说|shuō|to say/：“/好|hǎo|okay/！/我|wǒ|I/很|hěn|very/想|xiǎng|to want/去|qù|to go/。”=I say, “Okay! I really want to go.”",
+"十|shí|ten/点|diǎn|o’clock/，/我们|wǒmen|we/一起|yìqǐ|together/去|qù|to go/商店|shāngdiàn|shop/。=At ten, we go to the shop together.",
+"商店|shāngdiàn|shop/里|lǐ|inside/有|yǒu|to have/很多|hěn duō|a lot of/水果|shuǐguǒ|fruit/。=There is a lot of fruit in the shop.",
+"我|wǒ|I/买|mǎi|to buy/了|le|(completed)/五|wǔ|five/个|gè|(measure word)/苹果|píngguǒ|apple/。=I bought five apples.",
+"小红|Xiǎo Hóng|Xiao Hong/买|mǎi|to buy/了|le|(completed)/一|yí|one/个|gè|(measure word)/杯子|bēizi|cup/。=Xiao Hong bought a cup.",
+"苹果|píngguǒ|apple/五|wǔ|five/块|kuài|yuan/，/杯子|bēizi|cup/十|shí|ten/块|kuài|yuan/。=The apples were five yuan and the cup was ten yuan.",
+"中午|zhōngwǔ|noon/，/我们|wǒmen|we/去|qù|to go/饭店|fàndiàn|restaurant/吃饭|chīfàn|to eat/。=At noon, we go to a restaurant to eat.",
+"我|wǒ|I/吃|chī|to eat/了|le|(completed)/鱼|yú|fish/，/她|tā|she/吃|chī|to eat/了|le|(completed)/米饭|mǐfàn|rice/。=I ate fish and she ate rice.",
+"下午|xiàwǔ|afternoon/，/我们|wǒmen|we/去|qù|to go/看|kàn|to watch/电影|diànyǐng|movie/。=In the afternoon, we go to watch a movie.",
+"电影|diànyǐng|movie/很|hěn|very/好看|hǎokàn|good to watch/，/我们|wǒmen|we/都|dōu|both/很|hěn|very/喜欢|xǐhuan|to like/。=The movie was very good and we both liked it.",
+"五|wǔ|five/点|diǎn|o’clock/，/我|wǒ|I/回|huí|to return/家|jiā|home/了|le|(completed)/。=At five, I went home.",
+"妈妈|māma|mom/在|zài|(ongoing)/做|zuò|to make/饭|fàn|meal/，/爸爸|bàba|dad/在|zài|(ongoing)/看|kàn|to watch/电视|diànshì|TV/。=Mom was cooking and Dad was watching TV.",
+"我|wǒ|I/说|shuō|to say/：“/我|wǒ|I/回来|huílái|to come back/了|le|(completed)/！”=I said, “I’m back!”",
+"晚上|wǎnshang|evening/，/我们|wǒmen|we/一起|yìqǐ|together/吃饭|chīfàn|to eat/。=In the evening, we eat together.",
+"八|bā|eight/点|diǎn|o’clock/，/我|wǒ|I/坐|zuò|to sit/在|zài|on/椅子|yǐzi|chair/上|shàng|on top/看|kàn|to read/书|shū|book/。=At eight, I sit on a chair and read a book.",
+"十|shí|ten/点|diǎn|o’clock/，/我|wǒ|I/去|qù|to go/睡觉|shuìjiào|to sleep/了|le|(completed)/。=At ten, I go to sleep.",
+"今天|jīntiān|today/是|shì|to be/很|hěn|very/好|hǎo|good/的|de|(possessive)/一|yì|one/天|tiān|day/。=Today was a very good day.",
+"我|wǒ|I/爱|ài|to love/星期六|xīngqīliù|Saturday/。=I love Saturdays."]},
 {t:"我的一天",e:"My Day",s:[
 "我|wǒ|I/叫|jiào|to be called/小明|Xiǎo Míng|Xiao Ming/。=My name is Xiao Ming.",
 "我|wǒ|I/是|shì|to be/学生|xuésheng|student/。=I am a student.",
@@ -89,6 +141,18 @@ const LEVELS={
 "我|wǒ|I/不好意思|bù hǎoyìsi|embarrassed/地|de|(adverb marker)/走|zǒu|to walk/进|jìn|into/教室|jiàoshì|classroom/，/老师|lǎoshī|teacher/笑|xiào|to smile/着|zhe|(ongoing)/说|shuō|to say/没关系|méi guānxi|it’s okay/。=Embarrassed, I walked into the classroom; the teacher smiled and said it was okay.",
 "从|cóng|from/明天|míngtiān|tomorrow/起|qǐ|onward/，/我|wǒ|I/一定|yídìng|definitely/要|yào|must/早|zǎo|early/点儿|diǎnr|a bit/起床|qǐchuáng|to get up/。=From tomorrow on, I will definitely get up a bit earlier."]}]
 };
+const QZ={
+"我的家":[{q:"How many people are in the family?",o:["Three","Four","Five"],a:1},{q:"What is Dad’s job?",o:["Teacher","Doctor","Student"],a:1},{q:"What is the cat’s name?",o:["Mimi","Xiao Ming","Beijing"],a:0},{q:"What does the family do after the meal?",o:["Play outside","Watch TV","Go to sleep"],a:1}],
+"在饭店":[{q:"Who does the narrator go with?",o:["Mom","A friend","A teacher"],a:1},{q:"What does the narrator want to eat?",o:["Fish","Rice","Noodles"],a:0},{q:"How many cups of water do they want?",o:["One","Two","Three"],a:1},{q:"How much is the bill?",o:["Fifteen yuan","Fifty yuan","Five yuan"],a:1}],
+"快乐的星期六":[{q:"Which day of the week is the story about?",o:["Friday","Saturday","Sunday"],a:1},{q:"Who calls the narrator?",o:["Mom","Xiao Hong","A teacher"],a:1},{q:"What does the narrator buy at the shop?",o:["Apples","Tea","A book"],a:0},{q:"How much were the apples?",o:["Five yuan","Ten yuan","Fifty yuan"],a:0},{q:"What do they do in the afternoon?",o:["Watch a movie","Study","Play ball"],a:0},{q:"What does the narrator do at eight in the evening?",o:["Watch TV","Read a book","Cook dinner"],a:1}],
+"我的一天":[{q:"What is the narrator’s name?",o:["Xiao Ming","Xiao Hong","Li Lei"],a:0},{q:"Where does the narrator go today?",o:["The hospital","School","Beijing"],a:1},{q:"When do they eat with friends?",o:["Morning","Noon","Night"],a:1}]};
+const PKEY="graded-reader-progress";
+function lp(){try{return JSON.parse(localStorage.getItem(PKEY))||{}}catch(e){return{}}}
+let PR=lp();
+function sp(){try{localStorage.setItem(PKEY,JSON.stringify(PR))}catch(e){}}
+let fs=26;
+function size(d){fs=Math.min(40,Math.max(18,fs+d));document.documentElement.style.setProperty("--hz",fs+"px")}
+function markRead(){const p=PR[st.t]=PR[st.t]||{};p.read=1;sp()}
 const KEY="graded-reader-saved";
 function load(){try{return JSON.parse(localStorage.getItem(KEY))||[]}catch(e){return[]}}
 function store(){try{localStorage.setItem(KEY,JSON.stringify(saved))}catch(e){}}
@@ -100,21 +164,117 @@ let h=`<h1>Graded Reader</h1><p class="sub">Tap any word for pinyin and meaning.
 Object.keys(LEVELS).map(k=>`<button class="${k==lv?"on":""}" onclick="lv='${k}';home()">${k}</button>`).join("")+`</div>`+
 LEVELS[lv].map((s,i)=>`<button class="story" onclick="open_(${i})"><b>${s.t}</b><span>${s.e} · ${s.s.length} sentences</span></button>`).join("");
 $("app").innerHTML=h}
+function home(){st=null;cur=null;$("pop").style.display="none";
+const L=LEVELS[lv],done=L.filter(x=>PR[x.t]&&PR[x.t].best!=null).length;
+let h=`<header class="top"><h1>汉语 Reader</h1><p class="sub">Graded stories with pinyin, stroke order and quizzes</p></header><div class="tabs">`+
+Object.keys(LEVELS).map(k=>`<button class="${k==lv?"on":""}" onclick="lv='${k}';home()">${k}</button>`).join("")+
+`</div><div class="prog"><div class="bar"><i style="width:${Math.round(done/L.length*100)}%"></i></div><span>${done} of ${L.length} quizzed</span></div>`+
+L.map((x,i)=>{const p=PR[x.t]||{},n=(QZ[x.t]||[]).length;return `<button class="story" onclick="open_(${i})"><b>${x.t}</b><span>${x.e} · ${x.s.length} sentences</span><em>${p.best!=null?"Best "+p.best+"/"+n:p.read?"Read":"New"}</em></button>`}).join("")+
+`<button class="cta alt" onclick="review()">Review saved words (${saved.length})</button>`;
+$("app").innerHTML=h}
+let qi=0,qs=0,ri=0,rf=false;
+function quiz(){qi=0;qs=0;qn()}
+function qn(){const Q=QZ[st.t];
+if(qi>=Q.length){const p=PR[st.t]=PR[st.t]||{};p.read=1;p.best=Math.max(p.best||0,qs);sp();
+$("app").innerHTML=`<button class="back" onclick="home()">← All stories</button><h1>Quiz complete</h1><div class="score">${qs}<small>/${Q.length}</small></div><p class="sub">${qs==Q.length?"Perfect score!":"Good effort. Re-read the story and try again."}</p><button class="cta" onclick="quiz()">Try again</button><button class="cta alt" onclick="render()">Back to story</button>`;return}
+const q=Q[qi];
+$("app").innerHTML=`<button class="back" onclick="render()">← Story</button><p class="sub">Question ${qi+1} of ${Q.length}</p><h2>${q.q}</h2>`+q.o.map((o,j)=>`<button class="opt" onclick="ans(${j},this)">${o}</button>`).join("")+`<div id="fb"></div>`}
+function ans(j,b){const Q=QZ[st.t],q=Q[qi];
+document.querySelectorAll(".opt").forEach((x,k)=>{x.disabled=true;if(k==q.a)x.classList.add("ok")});
+if(j==q.a)qs++;else b.classList.add("no");
+$("fb").innerHTML=`<button class="cta" onclick="qi++;qn()">${qi+1>=Q.length?"See score":"Next"}</button>`}
+function review(){ri=0;rf=false;rc()}
+function rc(){if(!saved.length){$("app").innerHTML=`<button class="back" onclick="home()">← Home</button><h1>Review</h1><p class="sub">No saved words yet. Tap a word in any story and press Save, and it will appear here.</p>`;return}
+const w=saved[ri%saved.length];
+$("app").innerHTML=`<button class="back" onclick="home()">← Home</button><p class="sub">Card ${ri%saved.length+1} of ${saved.length}</p><div class="fc" onclick="rf=!rf;rc()">${rf?`<div class="py2">${w.py}</div><div>${w.g}</div>`:`<div class="hz2">${w.h}</div><small>Tap to reveal</small>`}</div><button class="cta" onclick="ri++;rf=false;rc()">Next card</button>`}
 function open_(i){st=LEVELS[lv][i];render()}
 function render(){
 let h=`<button class="back" onclick="home()">← All stories</button><h1>${st.t}</h1><p class="sub">${st.e} · ${lv}</p>
-<div class="row"><button class="${py?"on":""}" onclick="py=!py;render()">Pinyin</button><button class="${tr?"on":""}" onclick="tr=!tr;render()">Translation</button></div>
+<div class="row"><button class="${py?"on":""}" onclick="py=!py;render()">Pinyin</button><button class="${tr?"on":""}" onclick="tr=!tr;render()">Translation</button><button onclick="size(-2)">A−</button><button onclick="size(2)">A+</button></div>
 <div class="${py?"":"hide-py"} ${tr?"show-tr":""}">`;
 st.s.forEach((l,si)=>{const o=parse(l);h+=`<div class="sent"><div class="line">`+o.tk.map((t,ti)=>t.h?`<span class="w" data-k="${si}-${ti}" onclick="pick(${si},${ti},this)"><span class="py">${t.py}</span><span class="hz">${t.h}</span></span>`:`<span class="p">${t.p}</span>`).join("")+`</div><div class="tr">${o.en}</div></div>`});
-h+=`</div><div class="saved" id="sv"></div>`;$("app").innerHTML=h;svl()}
+h+=`</div>${QZ[st.t]?`<button class="cta" onclick="quiz()">Take the quiz →</button>`:""}<div class="saved" id="sv"></div>`;markRead();$("app").innerHTML=h;svl()}
 function pick(si,ti,el){const t=parse(st.s[si]).tk[ti];cur=t;
 document.querySelectorAll(".w.sel").forEach(x=>x.classList.remove("sel"));el.classList.add("sel");
-$("phz").textContent=t.h;$("ppy").textContent=t.py;$("pgl").textContent=t.g;$("pop").style.display="block";showStrokes(t.h);
+$("phz").textContent=t.h;$("ppy").textContent=t.py;$("pgl").textContent=t.g;$("pop").style.display="block";showStrokes(t.h);showInfo(t.h);
 $("psave").textContent=saved.some(s=>s.h==t.h)?"Saved ✓":"+ Save"}
-function closePop(){$("pop").style.display="none";$("strokes").innerHTML="";document.querySelectorAll(".w.sel").forEach(x=>x.classList.remove("sel"));cur=null}
+function closePop(){$("pop").style.display="none";$("strokes").innerHTML="";$("cinfo").innerHTML="";document.querySelectorAll(".w.sel").forEach(x=>x.classList.remove("sel"));cur=null}
 $("pclose").onclick=closePop;
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closePop()});
 $("psave").onclick=()=>{if(cur&&!saved.some(s=>s.h==cur.h)){saved.push(cur);store();$("psave").textContent="Saved ✓";svl()}};
+const CH={
+我:"I, me. Contains 戈 (dagger-axe) on the right.",
+家:"Home, family. 宀 (roof) over 豕 (pig): a house with livestock.",
+有:"To have. Traditionally a hand (𠂇) holding meat (月).",
+四:"Four.",
+个:"General measure word. Simplified from 個.",
+人:"Person. Looks like someone walking.",
+爸:"Dad. 父 (father) on top; 巴 hints at the sound.",
+妈:"Mom. 女 (woman) + 马, which hints at the sound.",
+哥:"Older brother. Two 可 stacked.",
+和:"And, with. 禾 (grain) + 口 (mouth).",
+是:"To be. 日 (sun) over 疋.",
+医:"Medicine, doctor. Simplified from 醫.",
+生:"To be born, life. A sprout growing out of the ground.",
+他:"He. 亻 (person) + 也.",
+她:"She. 女 (woman) + 也.",
+它:"It (for animals and things). 宀 (roof) + 匕.",
+也:"Also.",
+在:"To be at or in. 土 (earth) + 才.",
+院:"Courtyard, institution. 阝 (mound) + 完 (sound).",
+工:"Work. Shaped like a carpenter’s square.",
+作:"To do, to make. 亻 (person) + 乍.",
+做:"To do, to make. 亻 (person) + 故.",
+老:"Old. An elderly person with long hair leaning on a cane.",
+师:"Teacher, master. Simplified from 師.",
+学:"To study. 子 (child) beneath a roof-like top.",
+校:"School. 木 (wood) + 交, which hints at the sound.",
+们:"Plural marker for people. 亻 (person) + 门 (sound).",
+住:"To live, to stay. 亻 (person) + 主.",
+北:"North. Two people back to back.",
+京:"Capital city. A tall building on a platform.",
+一:"One. A single stroke.",
+只:"Measure word for animals. 口 over 八.",
+小:"Small.",
+猫:"Cat. 犭 (animal) + 苗 (sound).",
+的:"Possessive marker, like ’s. 白 + 勺.",
+名:"Name. 夕 (evening) + 口 (mouth): in the dark you call out names.",
+字:"Written character. 宀 (roof) + 子 (child).",
+叫:"To be called, to call. Has the 口 (mouth) radical.",
+咪:"Used for cat sounds and names. 口 (mouth) + 米.",
+星:"Star. 日 (sun) over 生.",
+期:"Period of time. 其 + 月 (moon).",
+天:"Sky, day. 大 (a person) with a line above.",
+都:"All, both. 者 + 阝.",
+很:"Very. 彳 + 艮.",
+多:"Many. Two 夕 (evening) stacked.",
+菜:"Vegetable, dish. 艹 (plant) + 采.",
+爱:"To love. Simplified from 愛, which had 心 (heart) in the middle.",
+吃:"To eat. 口 (mouth) + 乞.",
+米:"Rice. Grains on either side of a stalk.",
+饭:"Cooked rice, meal. 饣 (food) + 反.",
+以:"With, by means of; used in 以后 (after).",
+后:"After, behind.",
+看:"To look, to watch. 手 (hand) over 目 (eye): shading your eyes.",
+电:"Electricity. From 電, which had 雨 (rain) on top for lightning.",
+视:"To look at. Simplified from 視.",
+坐:"To sit. Two people (人人) on 土 (earth).",
+椅:"Chair. 木 (wood) + 奇.",
+子:"Child; also a common noun suffix.",
+上:"Up, on top. A mark above a line.",
+今:"Today, now.",
+去:"To go. 土 + 厶.",
+喜:"To like, happy.",
+欢:"Joyful. 又 + 欠. Simplified from 歡.",
+习:"To practice. Simplified from 習.",
+朋:"Friend. Two 月 side by side.",
+友:"Friend. Two hands (又) together.",
+中:"Middle. A line through the center of a box.",
+午:"Noon.",
+起:"To rise. 走 (walk) + 己.",
+明:"Bright. 日 (sun) + 月 (moon)."
+};
+function showInfo(h){$("cinfo").innerHTML=[...h].filter(c=>CH[c]).map(c=>`<div><b>${c}</b> — ${CH[c]}</div>`).join("")}
 function showStrokes(h){const box=$("strokes");box.innerHTML="";
 if(typeof HanziWriter==="undefined"){box.innerHTML='<div class="sc">Stroke order needs an internet connection</div>';return}
 const cs=getComputedStyle(document.documentElement);
