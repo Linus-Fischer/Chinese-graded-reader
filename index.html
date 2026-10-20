@@ -47,6 +47,7 @@ header.top h1{font-size:28px;letter-spacing:.5px;margin:0}
 .hz2{font-size:64px}.py2{color:var(--ac);font-size:22px}
 .score{font-size:64px;font-weight:700;color:var(--ac)}.score small{font-size:24px;color:var(--mut)}
 .hz,.p{font-size:var(--hz,26px)}
+.ko .hz,.ko .p{font-family:"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif}
 .back{background:none;border:none;color:var(--ac);padding:0;margin-bottom:8px}
 .saved{margin-top:24px;border-top:1px solid var(--bd);padding-top:12px;font-size:14px}
 .saved div{padding:3px 0}
@@ -141,9 +142,39 @@ const LEVELS={
 "我|wǒ|I/不好意思|bù hǎoyìsi|embarrassed/地|de|(adverb marker)/走|zǒu|to walk/进|jìn|into/教室|jiàoshì|classroom/，/老师|lǎoshī|teacher/笑|xiào|to smile/着|zhe|(ongoing)/说|shuō|to say/没关系|méi guānxi|it’s okay/。=Embarrassed, I walked into the classroom; the teacher smiled and said it was okay.",
 "从|cóng|from/明天|míngtiān|tomorrow/起|qǐ|onward/，/我|wǒ|I/一定|yídìng|definitely/要|yào|must/早|zǎo|early/点儿|diǎnr|a bit/起床|qǐchuáng|to get up/。=From tomorrow on, I will definitely get up a bit earlier."]}]
 };
+LEVELS["Korean 1"]=[{t:"친구를 만나요",e:"Meeting a Friend",s:[
+"오늘은|oneureun|today (topic)/토요일이에요|toyoirieyo|it is Saturday/.=Today is Saturday.",
+"저는|jeoneun|I (topic)/아침에|achime|in the morning/일어나요|ireonayo|get up/.=I get up in the morning.",
+"날씨가|nalssiga|the weather (subject)/아주|aju|very/좋아요|joayo|is good/.=The weather is very nice.",
+"저는|jeoneun|I (topic)/집에서|jibeseo|at home/빵을|ppangeul|bread (object)/먹어요|meogeoyo|eat/.=I eat bread at home.",
+"그리고|geurigo|and/우유도|uyudo|milk too/마셔요|masyeoyo|drink/.=And I drink milk too.",
+"열|yeol|ten/시에|sie|at o’clock/친구가|chinguga|friend (subject)/전화해요|jeonhwahaeyo|calls/.=At ten o’clock, my friend calls.",
+"친구|chingu|friend/이름은|ireumeun|name (topic)/민수예요|Minsuyeyo|is Minsu/.=My friend’s name is Minsu.",
+"민수가|Minsuga|Minsu (subject)/말해요|malhaeyo|says/:/“/우리|uri|we/카페에서|kapeeseo|at a café/만나요|mannayo|let’s meet/.”=Minsu says, “Let’s meet at a café.”",
+"저는|jeoneun|I (topic)/말해요|malhaeyo|say/:/“/좋아요|joayo|okay/!/”=I say, “Okay!”",
+"카페는|kapeneun|the café (topic)/집에서|jibeseo|from home/가까워요|gakkawoyo|is close/.=The café is close to my house.",
+"저는|jeoneun|I (topic)/걸어서|georeoseo|on foot/가요|gayo|go/.=I go on foot.",
+"카페에|kape-e|at the café/사람이|sarami|people (subject)/많아요|manayo|are many/.=There are many people at the café.",
+"민수가|Minsuga|Minsu (subject)/거기에|geogie|there/있어요|isseoyo|is (located)/.=Minsu is there.",
+"저는|jeoneun|I (topic)/커피를|keopireul|coffee (object)/마셔요|masyeoyo|drink/.=I drink coffee.",
+"민수는|Minsuneun|Minsu (topic)/차를|chareul|tea (object)/마셔요|masyeoyo|drinks/.=Minsu drinks tea.",
+"우리는|urineun|we (topic)/한국어를|hangugeoreul|Korean (object)/공부해요|gongbuhaeyo|study/.=We study Korean.",
+"한국어는|hangugeoneun|Korean (topic)/재미있어요|jaemiisseoyo|is fun/.=Korean is fun.",
+"열두|yeoldu|twelve/시에|sie|at o’clock/배가|baega|stomach (subject)/고파요|gopayo|is hungry/.=At twelve o’clock, I am hungry.",
+"우리는|urineun|we (topic)/식당에|sikdange|to a restaurant/가요|gayo|go/.=We go to a restaurant.",
+"저는|jeoneun|I (topic)/김밥을|gimbabeul|gimbap (object)/먹어요|meogeoyo|eat/.=I eat gimbap.",
+"민수는|Minsuneun|Minsu (topic)/비빔밥을|bibimbabeul|bibimbap (object)/먹어요|meogeoyo|eats/.=Minsu eats bibimbap.",
+"음식이|eumsigi|food (subject)/아주|aju|very/맛있어요|masisseoyo|is delicious/.=The food is very delicious.",
+"오후에|ohue|in the afternoon/우리는|urineun|we (topic)/공원에|gongwone|to the park/가요|gayo|go/.=In the afternoon, we go to the park.",
+"공원에서|gongwoneseo|at the park/우리는|urineun|we (topic)/이야기해요|iyagihaeyo|talk/.=At the park, we talk.",
+"저는|jeoneun|I (topic)/오늘|oneul|today/아주|aju|very/행복해요|haengbokhaeyo|am happy/.=I am very happy today.",
+"저녁에|jeonyeoge|in the evening/집에|jibe|home/가요|gayo|go/.=In the evening, I go home.",
+"민수에게|Minsuege|to Minsu/말해요|malhaeyo|say/:/“/내일|naeil|tomorrow/봐요|bwayo|see you/!/”=I say to Minsu, “See you tomorrow!”",
+"정말|jeongmal|really/좋은|joeun|good/하루였어요|haruyeosseoyo|was a day/.=It was a really good day."]}];
 const QZ={
 "我的家":[{q:"How many people are in the family?",o:["Three","Four","Five"],a:1},{q:"What is Dad’s job?",o:["Teacher","Doctor","Student"],a:1},{q:"What is the cat’s name?",o:["Mimi","Xiao Ming","Beijing"],a:0},{q:"What does the family do after the meal?",o:["Play outside","Watch TV","Go to sleep"],a:1}],
 "在饭店":[{q:"Who does the narrator go with?",o:["Mom","A friend","A teacher"],a:1},{q:"What does the narrator want to eat?",o:["Fish","Rice","Noodles"],a:0},{q:"How many cups of water do they want?",o:["One","Two","Three"],a:1},{q:"How much is the bill?",o:["Fifteen yuan","Fifty yuan","Five yuan"],a:1}],
+"친구를 만나요":[{q:"What day is it?",o:["Friday","Saturday","Sunday"],a:1},{q:"What is the friend’s name?",o:["Minsu","Jisoo","Hana"],a:0},{q:"Where do they meet?",o:["At a café","At school","At the park"],a:0},{q:"What does Minsu eat for lunch?",o:["Gimbap","Bibimbap","Noodles"],a:1},{q:"Where do they go in the afternoon?",o:["The park","The library","The market"],a:0},{q:"What does the narrator say at the end?",o:["See you tomorrow","Thank you","I’m sorry"],a:0}],
 "快乐的星期六":[{q:"Which day of the week is the story about?",o:["Friday","Saturday","Sunday"],a:1},{q:"Who calls the narrator?",o:["Mom","Xiao Hong","A teacher"],a:1},{q:"What does the narrator buy at the shop?",o:["Apples","Tea","A book"],a:0},{q:"How much were the apples?",o:["Five yuan","Ten yuan","Fifty yuan"],a:0},{q:"What do they do in the afternoon?",o:["Watch a movie","Study","Play ball"],a:0},{q:"What does the narrator do at eight in the evening?",o:["Watch TV","Read a book","Cook dinner"],a:1}],
 "我的一天":[{q:"What is the narrator’s name?",o:["Xiao Ming","Xiao Hong","Li Lei"],a:0},{q:"Where does the narrator go today?",o:["The hospital","School","Beijing"],a:1},{q:"When do they eat with friends?",o:["Morning","Noon","Night"],a:1}]};
 const PKEY="graded-reader-progress";
@@ -166,7 +197,7 @@ LEVELS[lv].map((s,i)=>`<button class="story" onclick="open_(${i})"><b>${s.t}</b>
 $("app").innerHTML=h}
 function home(){st=null;cur=null;$("pop").style.display="none";
 const L=LEVELS[lv],done=L.filter(x=>PR[x.t]&&PR[x.t].best!=null).length;
-let h=`<header class="top"><h1>汉语 Reader</h1><p class="sub">Graded stories with pinyin, stroke order and quizzes</p></header><div class="tabs">`+
+let h=`<header class="top"><h1>Graded Reader</h1><p class="sub">Chinese and Korean stories with quizzes</p></header><div class="tabs">`+
 Object.keys(LEVELS).map(k=>`<button class="${k==lv?"on":""}" onclick="lv='${k}';home()">${k}</button>`).join("")+
 `</div><div class="prog"><div class="bar"><i style="width:${Math.round(done/L.length*100)}%"></i></div><span>${done} of ${L.length} quizzed</span></div>`+
 L.map((x,i)=>{const p=PR[x.t]||{},n=(QZ[x.t]||[]).length;return `<button class="story" onclick="open_(${i})"><b>${x.t}</b><span>${x.e} · ${x.s.length} sentences</span><em>${p.best!=null?"Best "+p.best+"/"+n:p.read?"Read":"New"}</em></button>`}).join("")+
@@ -190,8 +221,8 @@ $("app").innerHTML=`<button class="back" onclick="home()">← Home</button><p cl
 function open_(i){st=LEVELS[lv][i];render()}
 function render(){
 let h=`<button class="back" onclick="home()">← All stories</button><h1>${st.t}</h1><p class="sub">${st.e} · ${lv}</p>
-<div class="row"><button class="${py?"on":""}" onclick="py=!py;render()">Pinyin</button><button class="${tr?"on":""}" onclick="tr=!tr;render()">Translation</button><button onclick="size(-2)">A−</button><button onclick="size(2)">A+</button></div>
-<div class="${py?"":"hide-py"} ${tr?"show-tr":""}">`;
+<div class="row"><button class="${py?"on":""}" onclick="py=!py;render()">${lv.startsWith("Korean")?"Romanization":"Pinyin"}</button><button class="${tr?"on":""}" onclick="tr=!tr;render()">Translation</button><button onclick="size(-2)">A−</button><button onclick="size(2)">A+</button></div>
+<div class="${py?"":"hide-py"} ${tr?"show-tr":""} ${lv.startsWith("Korean")?"ko":""}">`;
 st.s.forEach((l,si)=>{const o=parse(l);h+=`<div class="sent"><div class="line">`+o.tk.map((t,ti)=>t.h?`<span class="w" data-k="${si}-${ti}" onclick="pick(${si},${ti},this)"><span class="py">${t.py}</span><span class="hz">${t.h}</span></span>`:`<span class="p">${t.p}</span>`).join("")+`</div><div class="tr">${o.en}</div></div>`});
 h+=`</div>${QZ[st.t]?`<button class="cta" onclick="quiz()">Take the quiz →</button>`:""}<div class="saved" id="sv"></div>`;markRead();$("app").innerHTML=h;svl()}
 function pick(si,ti,el){const t=parse(st.s[si]).tk[ti];cur=t;
